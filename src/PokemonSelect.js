@@ -20,6 +20,7 @@ function PokemonSelect({ add, pokemon = pokemonList }) {
       </select>
       <button onClick={() => add(pokemon[pokeIdx])}>Catch one!</button>
       <button onClick={() => add(choice(pokemon))}>I'm feeling lucky</button>
+      <h1>{pokemon[pokeIdx]}</h1>
     </div>
   );
 }

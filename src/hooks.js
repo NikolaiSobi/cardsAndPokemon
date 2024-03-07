@@ -1,6 +1,7 @@
+import { useState } from "react"
 import axios from "axios"
-import { useState, useEffect } from "react"
 import {v1 as uuid} from "uuid";
+
 
 export const useFlip = () => {
     const [isFacingUp, setIsFacingUp] = useState(true)
@@ -10,20 +11,18 @@ export const useFlip = () => {
     return [isFacingUp, toggleCard]
 }
 
-export const useAxios =  (url, inc, cards) => {
-    let response;
-    const [state, setState] = useState([])
-    useEffect(() => {
-        const fetchData = async () => {
-            response = await axios.get(url)
-           
-        }
-        fetchData()
-        return () => {
+export const useAxios = (baseUrl) => {
+    try {
+        const [state, setState] = useState([])
 
-        }
-    }, [inc])
-   
-    return [response]
+        // added urlAddOn to default to empty string so the cards api doesn't add on to base url
+        const addCard = async (urlAddOn="") => {
+            const response = await axios.get(baseUrl + urlAddOn)
+            setState([...state, {...response.data, id: uuid()}])
+    }
+        return [state, addCard]
+    } catch (error) {
+        console.log(error)
+    }
 }
 
